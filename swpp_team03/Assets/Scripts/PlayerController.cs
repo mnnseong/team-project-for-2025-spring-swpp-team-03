@@ -125,6 +125,7 @@ public class PlayerController : MonoBehaviour
             bool immune = isImmune || dashForwardScript.isDashing || hyunmuModeScript.isInvincible;
             if (!immune)
             {
+				EffectManager.Instance.PlayMarcoHit(transform.position);
                 statusBarScript.TakeDamage(enemyDamage);
                 StartCoroutine(ImmuneCoroutine());
             }
@@ -150,6 +151,7 @@ public class PlayerController : MonoBehaviour
         // TODO : Item logic
         if (other.gameObject.CompareTag("Light") && lightTrigger)
         {
+			EffectManager.Instance.PlayBaseArrival(transform.position);
             routeManageInPlayingScript.Next();
             StartCoroutine(LightTriggerCoroutine());
         }

@@ -36,6 +36,8 @@ public class HyunmuMode : MonoBehaviour
     {
         isInvincible = true;
         // 원하는 비주얼 이펙트 추가 가능
+		EffectManager.Instance.PlayHyunmuSkill(transform.position);
+
         yield return new WaitForSeconds(duration);
         isInvincible = false;
     }

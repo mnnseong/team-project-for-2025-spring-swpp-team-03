@@ -98,6 +98,7 @@ public class StatusBar : MonoBehaviour, IGameEventObserver
     public void GameOver()
     {
         Debug.Log("Game Over!");
+		EffectManager.Instance.PlayGameOver(transform.position);
 		isGameOver = true;
         gameOverCanvas.SetActive(true);
         Time.timeScale = 0f;
@@ -105,6 +106,11 @@ public class StatusBar : MonoBehaviour, IGameEventObserver
         // Observer Pattern - 게임 오버 이벤트 발생
         GameEventSystem.Instance.TriggerEvent(GameEventType.GameOver, new { health = currentHealth, energy = currentEnergy });
     }
+
+	void EndGame()
+	{
+		
+	}
 
 	public bool IsGameOver()
 	{

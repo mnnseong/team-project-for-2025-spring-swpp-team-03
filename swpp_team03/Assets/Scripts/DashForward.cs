@@ -38,6 +38,8 @@ public class DashForward : MonoBehaviour
 
         isDashing = true;
         dashTimer = dashDuration;
+		
+		EffectManager.Instance.PlayBaekhoSkill(transform.position + transform.forward * 35f);
 
         // 👉 순간적으로 힘을 줘서 밀어버리기
         rb.velocity = transform.forward * dashSpeed;

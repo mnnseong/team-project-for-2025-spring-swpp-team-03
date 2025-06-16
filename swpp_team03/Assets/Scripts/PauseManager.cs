@@ -40,6 +40,7 @@ public class PauseManager : MonoBehaviour
 
     public void PauseGame()
     {
+		EffectManager.Instance.PlayButtonClick(new Vector3(0, 0, 0));
 		if (statusBar != null && statusBar.IsGameOver()) return;
 		if (routemanage != null && routemanage.IsGameCleared()) return;
 
@@ -51,6 +52,7 @@ public class PauseManager : MonoBehaviour
 
     public void ResumeGame()
     {
+		EffectManager.Instance.PlayButtonClick(new Vector3(0, 0, 0));
         Time.timeScale = 1f;
         isPaused = false;
         pauseMenuPanel.SetActive(false);

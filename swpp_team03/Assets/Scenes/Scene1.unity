@@ -1616,6 +1616,72 @@ Transform:
   m_Father: {fileID: 1054144390}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &250818398
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 250818400}
+  - component: {fileID: 250818399}
+  m_Layer: 0
+  m_Name: EffectSfxManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &250818399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 250818398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 164eb7625852c45a9ba588f249a67ffe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: 1760ae5d1b6ac4b1ca671196a83eda00, type: 2}
+  sfxVolumeParameter: SFXVolume
+  cheongryongSkillSFX: {fileID: 8300000, guid: 3ce5b467b543b4feeb8abf9edf596fb3, type: 3}
+  jujakSkillSFX: {fileID: 8300000, guid: 716371f4ef14b462dbe915111ea22bd5, type: 3}
+  baekhoSkillSFX: {fileID: 8300000, guid: 90b00f000e2d84e6b9ae69ee88bf816a, type: 3}
+  hyunmuSkillSFX: {fileID: 8300000, guid: ae5c612fafcd0412bbb614e588760c45, type: 3}
+  marcoHitSFX: {fileID: 8300000, guid: a18f31e7722a34581a00a6d585cf9f5f, type: 3}
+  obstacleBreakSFX: {fileID: 8300000, guid: 7013c846879144bf38efab4ab5173978, type: 3}
+  alienBreakSFX: {fileID: 8300000, guid: f98d871734ba64d0bbc8a8def4a30c52, type: 3}
+  baseArrivalSFX: {fileID: 8300000, guid: a7690803c55204a028f591c2caa5003d, type: 3}
+  energyRecoverSFX: {fileID: 8300000, guid: 4dcc2b45e22bb44dba941b747d1b1e9d, type: 3}
+  gameOverSFX: {fileID: 8300000, guid: fb080a287888644a8ac9fdaa96a5dc1f, type: 3}
+  buttonClickSFX: {fileID: 8300000, guid: 2833300871e7b4c8f8ab0ce68f25c3b8, type: 3}
+  cheongryongSkillEffect: {fileID: 1171201465392465800, guid: 4aa9f30a28a77224ba84b2a2c334c71b, type: 3}
+  jujakSkillEffect: {fileID: 1758473627833946668, guid: dab528bccfb322442af70626fd148cc5, type: 3}
+  baekhoSkillEffect: {fileID: 6063518424537689786, guid: bad5794a53f5c3645bb444b3a040ba01, type: 3}
+  hyunmuSkillEffect: {fileID: 6424583148328831481, guid: b17cc485d4ee1774d994912a55cf1dd7, type: 3}
+  marcoHitEffect: {fileID: 8078720523478869859, guid: 6f83d2e4f70edc043b22e3a0fe30e754, type: 3}
+  obstacleBreakEffect: {fileID: 358637981425055526, guid: b45272107c625ac4caa6f8483171989b, type: 3}
+  alienBreakEffect: {fileID: 447409866740539227, guid: 30b6581f335696d49942a97dc8adee22, type: 3}
+  baseArrivalEffect: {fileID: 7155335147208632822, guid: 2d115c1c38572144ebf333394c435ec6, type: 3}
+  marcoDeathEffect: {fileID: 3744133877081091469, guid: 51a1d801b40ab2f479817dd494126227, type: 3}
+--- !u!4 &250818400
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 250818398}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 553.6593, y: 313.17322, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 17
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &259052435
 GameObject:
   m_ObjectHideFlags: 0
@@ -6884,6 +6950,7 @@ GameObject:
   - component: {fileID: 1392851817}
   - component: {fileID: 1392851816}
   - component: {fileID: 1392851815}
+  - component: {fileID: 1392851819}
   m_Layer: 5
   m_Name: try again
   m_TagString: Untagged
@@ -7020,6 +7087,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1392851813}
   m_CullTransparentMesh: 1
+--- !u!114 &1392851819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1392851813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b19705ca12064b5cb9a36d5618b2306, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSound: {fileID: 8300000, guid: 2833300871e7b4c8f8ab0ce68f25c3b8, type: 3}
 --- !u!1 &1395399682
 GameObject:
   m_ObjectHideFlags: 0
@@ -9988,6 +10068,7 @@ GameObject:
   - component: {fileID: 2006934600}
   - component: {fileID: 2006934599}
   - component: {fileID: 2006934598}
+  - component: {fileID: 2006934601}
   - component: {fileID: 2006934597}
   m_Layer: 5
   m_Name: go to route
@@ -10125,6 +10206,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2006934595}
   m_CullTransparentMesh: 1
+--- !u!114 &2006934601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006934595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b19705ca12064b5cb9a36d5618b2306, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSound: {fileID: 8300000, guid: 2833300871e7b4c8f8ab0ce68f25c3b8, type: 3}
 --- !u!1 &2016581023
 GameObject:
   m_ObjectHideFlags: 0
