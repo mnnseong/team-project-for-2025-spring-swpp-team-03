@@ -3017,8 +3017,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -5, y: 0}
-  m_SizeDelta: {x: -20, y: 0}
+  m_AnchoredPosition: {x: 0.00002670288, y: 0}
+  m_SizeDelta: {x: -10.0000515, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &497363963
 GameObject:
@@ -3347,6 +3347,8 @@ MonoBehaviour:
   pauseMenuPanel: {fileID: 1815444351}
   pauseButton: {fileID: 1183881999}
   resumeButton: {fileID: 1461725782}
+  statusBar: {fileID: 21994839}
+  routemanage: {fileID: 21994841}
 --- !u!1001 &600809737
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10442,8 +10444,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -5, y: 0}
-  m_SizeDelta: {x: -20, y: 0}
+  m_AnchoredPosition: {x: -0.000049591064, y: 0}
+  m_SizeDelta: {x: -9.999899, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &2120221177
 PrefabInstance:

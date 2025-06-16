@@ -106,7 +106,10 @@ public class PlayerController : MonoBehaviour
                 rb.AddForce(force);
         }
 
-        UprightCorrection();
+        if (!isGrounded)
+		{
+			UprightCorrection();
+		}
     }
 
     void UprightCorrection()

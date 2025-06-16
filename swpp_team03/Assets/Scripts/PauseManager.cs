@@ -8,6 +8,8 @@ public class PauseManager : MonoBehaviour
     public GameObject pauseMenuPanel;
     public Button pauseButton;
     public Button resumeButton;
+	public StatusBar statusBar;
+	public RouteManageInPlaying routemanage;
 
     private bool isPaused = false;
 
@@ -38,6 +40,9 @@ public class PauseManager : MonoBehaviour
 
     public void PauseGame()
     {
+		if (statusBar != null && statusBar.IsGameOver()) return;
+		if (routemanage != null && routemanage.IsGameCleared()) return;
+
         Time.timeScale = 0f;
         isPaused = true;
         pauseMenuPanel.SetActive(true);
