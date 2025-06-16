@@ -76,4 +76,13 @@ public class BgmManager : MonoBehaviour
         }
     }
 
+	public void SetBGMVolume(float volume)
+	{
+		audioSource.volume = volume;
+	}
+
+	public void ToggleBGM(bool isOn)
+	{
+		audioSource.mute = !isOn;
+	}
 }
