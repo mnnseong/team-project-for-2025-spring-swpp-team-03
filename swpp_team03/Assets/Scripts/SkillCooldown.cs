@@ -22,7 +22,7 @@ public class SkillCooldown : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+		cooldownOverlay.fillAmount = 0f;
     }
 
     // Update is called once per frame
