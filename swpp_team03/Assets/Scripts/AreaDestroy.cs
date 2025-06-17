@@ -39,10 +39,19 @@ public class AreaDestroy : MonoBehaviour
         nextAvailableTime = Time.time + cooldown;
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
+		EffectManager.Instance.PlayCheongryongSkill(transform.position + transform.forward * 10f);
+
         foreach (Collider c in colliders)
         {
             if (c.CompareTag("Destructible") || c.CompareTag("Enemy"))
             {
+		        Vector3 pos = c.transform.position;
+
+				if (c.CompareTag("Destructible"))
+					EffectManager.Instance.PlayObstacleBreak(pos);
+				else if (c.CompareTag("Enemy"))
+					EffectManager.Instance.PlayAlienBreak(pos);
+
                 Debug.Log(c);
                 Destroy(c.gameObject);
             }

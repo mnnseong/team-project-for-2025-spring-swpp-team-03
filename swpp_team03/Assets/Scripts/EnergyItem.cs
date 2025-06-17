@@ -10,6 +10,8 @@ public class EnergyItem : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("[플레이어 감지됨] 에너지 증가!");
+			EffectManager.Instance.PlayEnergyRecover(transform.position);
+
             StatusBar status = FindObjectOfType<StatusBar>();
             if (status != null)
             {

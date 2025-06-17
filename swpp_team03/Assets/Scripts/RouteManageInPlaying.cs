@@ -11,6 +11,8 @@ public class RouteManageInPlaying : MonoBehaviour
     public Transform[] lightTransforms;
     public GameObject lightObject;
     public TextMeshProUGUI nextBaseText;
+	private bool isGameCleared = false;
+
     void Start()
     {
         if (GameObject.Find("RouteManager_1"))
@@ -25,6 +27,10 @@ public class RouteManageInPlaying : MonoBehaviour
             routeInt = 32;
         }
         lightObject.transform.position = lightTransforms[routeInt % 10].position;
+
+		MiniMapNext marker = FindObjectOfType<MiniMapNext>();
+		marker.target = lightObject.transform;
+		
         nextBaseText.text = $"Next Base : {routeInt%10}";
         routeInt = routeInt / 10;
     }
@@ -40,6 +46,7 @@ public class RouteManageInPlaying : MonoBehaviour
         if (routeInt == 0)
         {
             Debug.Log("Game Clear!");
+			isGameCleared = true;
             Time.timeScale = 0f;
         }
         else
@@ -48,6 +55,16 @@ public class RouteManageInPlaying : MonoBehaviour
             routeInt = routeInt / 10;
             nextBaseText.text = $"Next Base : {nextindex}";
             lightObject.transform.position = lightTransforms[nextindex].position;
+			MiniMapNext marker = FindObjectOfType<MiniMapNext>();
+			if (marker != null)
+			{
+				marker.target = lightObject.transform;
+			}
         }
     }
+
+	public bool IsGameCleared()
+	{
+		return isGameCleared;
+	}
 }

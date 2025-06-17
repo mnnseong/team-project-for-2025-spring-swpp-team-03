@@ -58,6 +58,8 @@ public class HighJump : MonoBehaviour
         ConsumeEnergy(energyCost);
         nextAvailableTime = Time.time + cooldown;
 
+		EffectManager.Instance.PlayJujakSkill(transform.position);
+
         rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
         isJumping = true;
         slowFalling = true;
