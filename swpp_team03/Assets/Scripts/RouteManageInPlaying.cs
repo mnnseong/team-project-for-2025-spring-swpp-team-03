@@ -27,6 +27,10 @@ public class RouteManageInPlaying : MonoBehaviour
             routeInt = 32;
         }
         lightObject.transform.position = lightTransforms[routeInt % 10].position;
+
+		MiniMapNext marker = FindObjectOfType<MiniMapNext>();
+		marker.target = lightObject.transform;
+		
         nextBaseText.text = $"Next Base : {routeInt%10}";
         routeInt = routeInt / 10;
     }
@@ -51,6 +55,11 @@ public class RouteManageInPlaying : MonoBehaviour
             routeInt = routeInt / 10;
             nextBaseText.text = $"Next Base : {nextindex}";
             lightObject.transform.position = lightTransforms[nextindex].position;
+			MiniMapNext marker = FindObjectOfType<MiniMapNext>();
+			if (marker != null)
+			{
+				marker.target = lightObject.transform;
+			}
         }
     }
 
