@@ -10,10 +10,12 @@ public class AreaDestroy : MonoBehaviour
     private float nextAvailableTime = 0f;
 
     private StatusBar statusBar;
+    private PlayerController playerController;
 
     void Start()
     {
         statusBar = FindObjectOfType<StatusBar>();
+        playerController = GetComponent<PlayerController>();
     }
 
     void Update()
@@ -39,7 +41,8 @@ public class AreaDestroy : MonoBehaviour
         nextAvailableTime = Time.time + cooldown;
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
-		EffectManager.Instance.PlayCheongryongSkill(transform.position + transform.forward * 10f);
+        Vector3 velocity = playerController != null ? playerController.GetVelocity() : Vector3.zero;
+		EffectManager.Instance.PlayCheongryongSkill(transform.position + transform.forward * 10f, velocity);
 
         foreach (Collider c in colliders)
         {

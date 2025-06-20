@@ -12,6 +12,7 @@ public class HighJump : MonoBehaviour
     private float nextAvailableTime = 0f;
     private Rigidbody rb;
     private StatusBar statusBar;
+    private PlayerController playerController;
 
     private bool isJumping = false;
     private bool slowFalling = false;
@@ -20,6 +21,7 @@ public class HighJump : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         statusBar = FindObjectOfType<StatusBar>();
+        playerController = GetComponent<PlayerController>();
     }
 
     void Update()
@@ -58,7 +60,8 @@ public class HighJump : MonoBehaviour
         ConsumeEnergy(energyCost);
         nextAvailableTime = Time.time + cooldown;
 
-		EffectManager.Instance.PlayJujakSkill(transform.position);
+        Vector3 velocity = playerController != null ? playerController.GetVelocity() : Vector3.zero;
+		EffectManager.Instance.PlayJujakSkill(transform.position, velocity);
 
         rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
         isJumping = true;
