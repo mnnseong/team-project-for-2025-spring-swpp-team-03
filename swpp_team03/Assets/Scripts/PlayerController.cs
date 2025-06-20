@@ -10,18 +10,16 @@ public class PlayerController : MonoBehaviour
     public float rotationSpeed = 60f;
     public float uprightStability = 2f;
     public float groundCheckDistance = 1.0f;
-    
+
     [Header("물리 설정")]
     public float centerOfGravityY = -1.5f;
     public float gravityStrength = 1.0f;
-    
+
     [Header("전투 설정")]
     public int enemyDamage = 10;
     public float immuneTime = 3.0f;
-    
-    [Header("게임 오브젝트")]
-    public GameObject gameClear;
-    
+
+
     // 컴포넌트 참조들
     private Rigidbody rb;
     private GameObject gameManager;
@@ -29,13 +27,13 @@ public class PlayerController : MonoBehaviour
     private RouteManageInPlaying routeManageInPlayingScript;
     private DashForward dashForwardScript;
     private HyunmuMode hyunmuModeScript;
-    
+
     // 상태 변수들
     private bool isGrounded;
     public bool isImmune = false;
     private bool lightTrigger = true;
 
-    // State Pattern 
+    // State Pattern
     private IPlayerState currentState;
     private NormalState normalState;
     private DashingState dashingState;
@@ -49,7 +47,7 @@ public class PlayerController : MonoBehaviour
         InitializeStates();
         InitializeGameReferences();
     }
-    
+
     void InitializeComponents()
     {
         rb = GetComponent<Rigidbody>();
@@ -58,15 +56,15 @@ public class PlayerController : MonoBehaviour
             Debug.LogError("❌ Rigidbody component is missing!");
             return;
         }
-        
+
         dashForwardScript = GetComponent<DashForward>();
         hyunmuModeScript = GetComponent<HyunmuMode>();
     }
-    
+
     void InitializePhysics()
     {
         if (rb == null) return;
-        
+
         // 무게 중심 설정
         Vector3 com = rb.centerOfMass;
         com.y = centerOfGravityY;
@@ -75,7 +73,7 @@ public class PlayerController : MonoBehaviour
         // 중력 설정
         Physics.gravity = new Vector3(0, -9.81f * gravityStrength, 0);
     }
-    
+
     void InitializeGameReferences()
     {
         gameManager = GameObject.Find("GameManager");
@@ -83,7 +81,7 @@ public class PlayerController : MonoBehaviour
         {
             statusBarScript = gameManager.GetComponent<StatusBar>();
             routeManageInPlayingScript = gameManager.GetComponent<RouteManageInPlaying>();
-            
+
             if (statusBarScript == null)
                 Debug.LogWarning("⚠️ StatusBar script not found on GameManager!");
             if (routeManageInPlayingScript == null)
@@ -113,7 +111,7 @@ public class PlayerController : MonoBehaviour
             Debug.LogWarning("⚠️ Trying to change to null state!");
             return;
         }
-        
+
         currentState?.Exit(this);
         currentState = newState;
         currentState.Enter(this);
@@ -132,7 +130,7 @@ public class PlayerController : MonoBehaviour
         // 입력 처리
         HandleRotationInput();
     }
-    
+
     void HandleRotationInput()
     {
         float turn = Input.GetAxis("Horizontal");
@@ -146,21 +144,21 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         if (rb == null) return;
-        
+
         UpdateGroundCheck();
         HandleMovementInput();
-        
+
         if (!isGrounded)
         {
             UprightCorrection();
         }
     }
-    
+
     void UpdateGroundCheck()
     {
         isGrounded = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance + 0.1f);
     }
-    
+
     void HandleMovementInput()
     {
         float move = Input.GetAxis("Vertical");
@@ -176,7 +174,7 @@ public class PlayerController : MonoBehaviour
     void UprightCorrection()
     {
         if (rb == null) return;
-        
+
         Quaternion targetRotation = Quaternion.FromToRotation(transform.up, Vector3.up) * rb.rotation;
         rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, uprightStability * Time.fixedDeltaTime));
     }
@@ -188,13 +186,13 @@ public class PlayerController : MonoBehaviour
             HandleEnemyCollision();
         }
     }
-    
+
     void HandleEnemyCollision()
     {
-        bool immune = isImmune || 
-                     (dashForwardScript != null && dashForwardScript.isDashing) || 
+        bool immune = isImmune ||
+                     (dashForwardScript != null && dashForwardScript.isDashing) ||
                      (hyunmuModeScript != null && hyunmuModeScript.isInvincible);
-                     
+
         if (!immune)
         {
             EffectManager.Instance?.PlayMarcoHit(transform.position);
@@ -206,7 +204,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator ImmuneCoroutine()
     {
         isImmune = true;
-        
+
         // State를 Immune으로 변경
         IPlayerState previousState = currentState;
         ChangeState(immuneState);
@@ -225,22 +223,12 @@ public class PlayerController : MonoBehaviour
             HandleLightTrigger();
         }
     }
-    
+
     void HandleLightTrigger()
     {
         EffectManager.Instance?.PlayBaseArrival(transform.position);
-        
-        if (gameClear != null)
-        {
-            gameClear.SetActive(true);
-        }
-        else
-        {
-            Debug.LogWarning("⚠️ GameClear object is not assigned!");
-        }
-        
+        routeManageInPlayingScript.Next();
         StartCoroutine(LightTriggerCoroutine());
-        Time.timeScale = 0f;
     }
 
     private IEnumerator LightTriggerCoroutine()
@@ -265,7 +253,7 @@ public class PlayerController : MonoBehaviour
     {
         ChangeState(normalState);
     }
-    
+
     // 디버그 정보 제공
     public bool IsGrounded() => isGrounded;
     public bool IsImmune() => isImmune;

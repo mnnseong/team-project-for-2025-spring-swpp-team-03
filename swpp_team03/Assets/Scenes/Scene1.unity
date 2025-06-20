@@ -199,6 +199,7 @@ MonoBehaviour:
   - {fileID: 695226932}
   lightObject: {fileID: 1227067641}
   nextBaseText: {fileID: 842716139}
+  gameClear: {fileID: 1582599202}
 --- !u!1 &37540632
 GameObject:
   m_ObjectHideFlags: 0
@@ -2063,6 +2064,8 @@ MonoBehaviour:
   alienBreakEffect: {fileID: 447409866740539227, guid: 30b6581f335696d49942a97dc8adee22, type: 3}
   baseArrivalEffect: {fileID: 7155335147208632822, guid: 2d115c1c38572144ebf333394c435ec6, type: 3}
   marcoDeathEffect: {fileID: 3744133877081091469, guid: 51a1d801b40ab2f479817dd494126227, type: 3}
+  initialPoolSize: 10
+  maxPoolSize: 50
 --- !u!4 &250818400
 Transform:
   m_ObjectHideFlags: 0
@@ -23051,6 +23054,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 835353135}
     m_Modifications:
+    - target: {fileID: 543450653145746950, guid: 5d980a636cb27c745ba5eb7541152e0d, type: 3}
+      propertyPath: duration
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7165709235137492542, guid: 5d980a636cb27c745ba5eb7541152e0d, type: 3}
       propertyPath: m_RootOrder
       value: 1

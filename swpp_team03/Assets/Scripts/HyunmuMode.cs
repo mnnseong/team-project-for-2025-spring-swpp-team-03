@@ -10,11 +10,13 @@ public class HyunmuMode : MonoBehaviour
     private float nextAvailableTime = 0f;
 
     private StatusBar statusBar;
+    private PlayerController playerController;
     public bool isInvincible = false;
 
     void Start()
     {
         statusBar = FindObjectOfType<StatusBar>();
+        playerController = GetComponent<PlayerController>();
     }
 
     public void ManualTrigger()
@@ -35,9 +37,8 @@ public class HyunmuMode : MonoBehaviour
     private IEnumerator InvincibilityRoutine()
     {
         isInvincible = true;
-        // 원하는 비주얼 이펙트 추가 가능
-		EffectManager.Instance.PlayHyunmuSkill(transform.position);
-
+        EffectManager.Instance.PlayHyunmuSkillFollow(gameObject, duration);
+        //EffectManager.Instance.PlayHyunmuSkill(transform.position);
         yield return new WaitForSeconds(duration);
         isInvincible = false;
     }
