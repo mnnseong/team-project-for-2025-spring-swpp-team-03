@@ -2250,6 +2250,7 @@ MonoBehaviour:
   groundCheckDistance: 2
   centerOfGravityY: -1
   gravityStrength: 10
+  gameClear: {fileID: 0}
   isImmune: 0
   enemyDamage: 10
   immuneTime: 3
