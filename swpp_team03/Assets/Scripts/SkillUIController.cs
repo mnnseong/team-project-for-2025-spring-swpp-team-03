@@ -4,42 +4,65 @@ using System.Collections.Generic;
 
 public class SkillUIController : MonoBehaviour
 {
+    [Header("UI 버튼들")]
     public Button button_h;
     public Button button_j;
     public Button button_k;
     public Button button_l;
     
-    // Command Pattern 적용
-    private Dictionary<string, ISkillCommand> skillCommands;
-
-	public SkillCooldown cooldown_h;
-	public SkillCooldown cooldown_j;
-	public SkillCooldown cooldown_k;
-	public SkillCooldown cooldown_l;
+    [Header("쿨다운 컴포넌트들")]
+    public SkillCooldown cooldown_h;
+    public SkillCooldown cooldown_j;
+    public SkillCooldown cooldown_k;
+    public SkillCooldown cooldown_l;
+    
+    // Factory Pattern으로 생성된 스킬 명령들
+    private Dictionary<SkillType, ISkillCommand> skillCommands;
+    private Dictionary<SkillType, SkillCooldown> skillCooldowns;
 
     void Start()
     {
-        // 스킬 명령 초기화
-        InitializeSkillCommands();
-        
-        button_h.onClick.AddListener(() => UseSkill("H"));
-        button_j.onClick.AddListener(() => UseSkill("J"));
-        button_k.onClick.AddListener(() => UseSkill("K"));
-        button_l.onClick.AddListener(() => UseSkill("L"));
+        InitializeSkillSystem();
+        SetupButtonListeners();
     }
     
-    void InitializeSkillCommands()
+    void InitializeSkillSystem()
     {
-        skillCommands = new Dictionary<string, ISkillCommand>
+        // Factory Pattern을 사용한 스킬 명령 초기화
+        skillCommands = new Dictionary<SkillType, ISkillCommand>();
+        foreach (SkillType skillType in System.Enum.GetValues(typeof(SkillType)))
         {
-            { "h", new DragonSkillCommand() },   // 청룡
-            { "j", new TigerSkillCommand() },    // 백호
-            { "k", new PhoenixSkillCommand() },  // 주작
-            { "l", new TurtleSkillCommand() }    // 현무
+            var command = SkillFactory.CreateSkillCommand(skillType);
+            if (command != null)
+            {
+                skillCommands[skillType] = command;
+            }
+        }
+        
+        // 쿨다운 컴포넌트 매핑
+        skillCooldowns = new Dictionary<SkillType, SkillCooldown>
+        {
+            { SkillType.Dragon, cooldown_h },
+            { SkillType.Tiger, cooldown_j },
+            { SkillType.Phoenix, cooldown_k },
+            { SkillType.Turtle, cooldown_l }
         };
+    }
+    
+    void SetupButtonListeners()
+    {
+        button_h?.onClick.AddListener(() => UseSkill("H"));
+        button_j?.onClick.AddListener(() => UseSkill("J"));
+        button_k?.onClick.AddListener(() => UseSkill("K"));
+        button_l?.onClick.AddListener(() => UseSkill("L"));
     }
 
     void Update()
+    {
+        HandleKeyboardInput();
+    }
+    
+    void HandleKeyboardInput()
     {
         if (Input.GetKeyDown(KeyCode.H)) UseSkill("H");
         if (Input.GetKeyDown(KeyCode.J)) UseSkill("J");
@@ -51,85 +74,96 @@ public class SkillUIController : MonoBehaviour
     {
         Debug.Log($"💥 Skill {key} activated!");
 
-        string lowerKey = key.ToLower();
-		if (lowerKey == "h")
-		{
-			if (cooldown_h.IsOnCooldown())
-			{
-				Debug.Log("h : 쿨다운중");
-				return;
-			}
-			cooldown_h.cooldownDuration = 10;
-			cooldown_h.TriggerCooldown();
-		} 
-		if (lowerKey == "j")
-		{
-			if (cooldown_j.IsOnCooldown())
-			{
-				Debug.Log("j : 쿨다운중");
-				return;
-			}
-			cooldown_j.cooldownDuration = 12;
-			cooldown_j.TriggerCooldown();
-		} 
-		if (lowerKey == "k")
-		{
-			if (cooldown_k.IsOnCooldown())
-			{
-				Debug.Log("k : 쿨다운중");
-				return;
-			}
-			cooldown_k.cooldownDuration = 8;
-			cooldown_k.TriggerCooldown();
-		} 
-		if (lowerKey == "l")
-		{
-			if (cooldown_l.IsOnCooldown())
-			{
-				Debug.Log("l : 쿨다운중");
-				return;
-			}
-			cooldown_l.cooldownDuration = 15;
-			cooldown_l.TriggerCooldown();
-		} 
-		
+        SkillType skillType = SkillFactory.GetSkillTypeFromKey(key);
         
-        if (skillCommands.ContainsKey(lowerKey))
+        // 쿨다운 체크
+        if (!CanUseSkill(skillType))
         {
-            ISkillCommand command = skillCommands[lowerKey];
-            if (command.CanExecute())
-            {
-                command.Execute();
-                
-                // Observer Pattern - 스킬 사용 이벤트 발생
-                GameEventSystem.Instance.TriggerEvent(GameEventType.SkillUsed, new { 
-                    skillName = command.GetSkillName(), 
-                    skillKey = key,
-                    timestamp = Time.time 
-                });
-            }
-            else
-            {
-                Debug.LogWarning($"🚫 {command.GetSkillName()}을(를) 사용할 수 없습니다!");
-            }
+            Debug.Log($"{key} : 쿨다운중");
+            return;
+        }
+        
+        // 스킬 실행
+        if (ExecuteSkill(skillType))
+        {
+            // 쿨다운 시작
+            StartCooldown(skillType);
+            
+            // Observer Pattern - 스킬 사용 이벤트 발생
+            TriggerSkillUsedEvent(skillType, key);
+        }
+    }
+    
+    bool CanUseSkill(SkillType skillType)
+    {
+        return skillCooldowns.ContainsKey(skillType) && 
+               skillCooldowns[skillType] != null && 
+               !skillCooldowns[skillType].IsOnCooldown();
+    }
+    
+    bool ExecuteSkill(SkillType skillType)
+    {
+        if (!skillCommands.ContainsKey(skillType))
+        {
+            Debug.LogWarning($"💥 Invalid skill type: {skillType}!");
+            return false;
+        }
+        
+        ISkillCommand command = skillCommands[skillType];
+        if (command == null)
+        {
+            Debug.LogWarning($"🚫 Skill command is null for {skillType}!");
+            return false;
+        }
+        
+        if (command.CanExecute())
+        {
+            command.Execute();
+            return true;
         }
         else
         {
-            Debug.Log("💥 Invalid skill key!");
+            Debug.LogWarning($"🚫 {command.GetSkillName()}을(를) 사용할 수 없습니다!");
+            return false;
+        }
+    }
+    
+    void StartCooldown(SkillType skillType)
+    {
+        if (!skillCooldowns.ContainsKey(skillType) || skillCooldowns[skillType] == null)
+            return;
+            
+        SkillInfo skillInfo = SkillFactory.GetSkillInfo(skillType);
+        if (skillInfo != null)
+        {
+            skillCooldowns[skillType].cooldownDuration = skillInfo.cooldownDuration;
+            skillCooldowns[skillType].TriggerCooldown();
+        }
+    }
+    
+    void TriggerSkillUsedEvent(SkillType skillType, string key)
+    {
+        if (skillCommands.ContainsKey(skillType))
+        {
+            GameEventSystem.Instance.TriggerEvent(GameEventType.SkillUsed, new { 
+                skillName = skillCommands[skillType].GetSkillName(), 
+                skillKey = key,
+                skillType = skillType,
+                timestamp = Time.time 
+            });
         }
     }
 
-    // 기존 메서드들은 하위 호환성을 위해 유지 (사용되지 않음)
+    // 기존 메서드들은 하위 호환성을 위해 유지 (deprecated)
+    [System.Obsolete("Use UseSkill method instead")]
     void skill_H()
     {
-
         // 청룡
-		if (cooldown_h.IsOnCooldown())
-		{
-			Debug.Log("쿨다운중");
-			return;
-		}
-
+        if (cooldown_h.IsOnCooldown())
+        {
+            Debug.Log("쿨다운중");
+            return;
+        }
 
         Debug.Log("근처 장애물 파괴!");
         GameObject player = GameObject.FindWithTag("Player");
@@ -139,8 +173,8 @@ public class SkillUIController : MonoBehaviour
             if (areaDestroy != null)
             {
                 areaDestroy.ManualTrigger();
-				cooldown_h.cooldownDuration = 10;
-				cooldown_h.TriggerCooldown();
+                cooldown_h.cooldownDuration = 10;
+                cooldown_h.TriggerCooldown();
             }
             else
             {
@@ -149,18 +183,17 @@ public class SkillUIController : MonoBehaviour
         }
     }
 
+    [System.Obsolete("Use UseSkill method instead")]
     void skill_J()
     {
-
         // 백호
-		if (cooldown_j.IsOnCooldown())
-		{
-			Debug.Log("쿨다운중");
-			return;
+        if (cooldown_j.IsOnCooldown())
+        {
+            Debug.Log("쿨다운중");
+            return;
         }
 
-		Debug.Log("🐯 백호 스킬 발동: 돌진!");
-
+        Debug.Log("🐯 백호 스킬 발동: 돌진!");
 
         GameObject player = GameObject.FindWithTag("Player");
         if (player != null)
@@ -169,8 +202,8 @@ public class SkillUIController : MonoBehaviour
             if (dash != null)
             {
                 dash.StartDash();
-				cooldown_j.cooldownDuration = 12;
-				cooldown_j.TriggerCooldown();
+                cooldown_j.cooldownDuration = 12;
+                cooldown_j.TriggerCooldown();
             }
             else
             {
@@ -179,13 +212,14 @@ public class SkillUIController : MonoBehaviour
         }
     }
 
+    [System.Obsolete("Use UseSkill method instead")]
     void skill_K()
     {
         // 주작
-		if (cooldown_k.IsOnCooldown())
-		{
-			Debug.Log("쿨다운중");
-			return;
+        if (cooldown_k.IsOnCooldown())
+        {
+            Debug.Log("쿨다운중");
+            return;
         }
 
         Debug.Log("점프!");
@@ -196,8 +230,8 @@ public class SkillUIController : MonoBehaviour
             if (jumpSkill != null)
             {
                 jumpSkill.ManualTrigger();
-				cooldown_k.cooldownDuration = 8;
-				cooldown_k.TriggerCooldown();
+                cooldown_k.cooldownDuration = 8;
+                cooldown_k.TriggerCooldown();
             }
             else
             {
@@ -206,14 +240,14 @@ public class SkillUIController : MonoBehaviour
         }
     }
 
+    [System.Obsolete("Use UseSkill method instead")]
     void skill_L()
     {
-
         // 현무
-		if (cooldown_l.IsOnCooldown())
-		{
-			Debug.Log("쿨다운중");
-			return;
+        if (cooldown_l.IsOnCooldown())
+        {
+            Debug.Log("쿨다운중");
+            return;
         }
         Debug.Log("현무모드");
 
@@ -223,8 +257,8 @@ public class SkillUIController : MonoBehaviour
             if (hyunmu != null)
             {
                 hyunmu.ManualTrigger();
-				cooldown_l.cooldownDuration = 20;
-				cooldown_l.TriggerCooldown();
+                cooldown_l.cooldownDuration = 20;
+                cooldown_l.TriggerCooldown();
             }
             else
             {

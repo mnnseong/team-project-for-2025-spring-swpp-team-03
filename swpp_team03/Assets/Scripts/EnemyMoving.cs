@@ -16,7 +16,6 @@ public class EnemyMoving : MonoBehaviour
     private Transform target;
 
     private int rotatingLeft = 1;
-    private bool returningToJoint = false;
     private float angularSpeed;
 
     // 원형 순찰용 중심 (8자형이 아닐 때 사용)

@@ -4,51 +4,95 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("이동 설정")]
     public float moveForce = 20f;
     public float maxSpeed = 10f;
     public float rotationSpeed = 60f;
     public float uprightStability = 2f;
     public float groundCheckDistance = 1.0f;
+    
+    [Header("물리 설정")]
     public float centerOfGravityY = -1.5f;
     public float gravityStrength = 1.0f;
-    public GameObject gameClear;
-    private Rigidbody rb;
-    private bool isGrounded;
-    public bool isImmune = false;
+    
+    [Header("전투 설정")]
     public int enemyDamage = 10;
     public float immuneTime = 3.0f;
+    
+    [Header("게임 오브젝트")]
+    public GameObject gameClear;
+    
+    // 컴포넌트 참조들
+    private Rigidbody rb;
     private GameObject gameManager;
     private StatusBar statusBarScript;
     private RouteManageInPlaying routeManageInPlayingScript;
     private DashForward dashForwardScript;
     private HyunmuMode hyunmuModeScript;
+    
+    // 상태 변수들
+    private bool isGrounded;
+    public bool isImmune = false;
     private bool lightTrigger = true;
 
-    // State Pattern 추가
+    // State Pattern 
     private IPlayerState currentState;
     private NormalState normalState;
     private DashingState dashingState;
     private InvincibleState invincibleState;
     private ImmuneState immuneState;
 
-
-    // Start is called before the first frame update
     void Start()
     {
+        InitializeComponents();
+        InitializePhysics();
+        InitializeStates();
+        InitializeGameReferences();
+    }
+    
+    void InitializeComponents()
+    {
         rb = GetComponent<Rigidbody>();
-        //rb.centerOfMass = new Vector3(0, centerOfGravityY, 0); // 무게 중심을 아래로
+        if (rb == null)
+        {
+            Debug.LogError("❌ Rigidbody component is missing!");
+            return;
+        }
+        
+        dashForwardScript = GetComponent<DashForward>();
+        hyunmuModeScript = GetComponent<HyunmuMode>();
+    }
+    
+    void InitializePhysics()
+    {
+        if (rb == null) return;
+        
+        // 무게 중심 설정
         Vector3 com = rb.centerOfMass;
         com.y = centerOfGravityY;
         rb.centerOfMass = com;
 
+        // 중력 설정
         Physics.gravity = new Vector3(0, -9.81f * gravityStrength, 0);
+    }
+    
+    void InitializeGameReferences()
+    {
         gameManager = GameObject.Find("GameManager");
-        statusBarScript = gameManager.GetComponent<StatusBar>();
-        routeManageInPlayingScript = gameManager.GetComponent<RouteManageInPlaying>();
-        dashForwardScript = GetComponent<DashForward>();
-        hyunmuModeScript = GetComponent<HyunmuMode>();
-        // State Pattern 초기화
-        InitializeStates();
+        if (gameManager != null)
+        {
+            statusBarScript = gameManager.GetComponent<StatusBar>();
+            routeManageInPlayingScript = gameManager.GetComponent<RouteManageInPlaying>();
+            
+            if (statusBarScript == null)
+                Debug.LogWarning("⚠️ StatusBar script not found on GameManager!");
+            if (routeManageInPlayingScript == null)
+                Debug.LogWarning("⚠️ RouteManageInPlaying script not found on GameManager!");
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ GameManager not found!");
+        }
     }
 
     void InitializeStates()
@@ -64,11 +108,13 @@ public class PlayerController : MonoBehaviour
 
     public void ChangeState(IPlayerState newState)
     {
-        if (currentState != null)
+        if (newState == null)
         {
-            currentState.Exit(this);
+            Debug.LogWarning("⚠️ Trying to change to null state!");
+            return;
         }
-
+        
+        currentState?.Exit(this);
         currentState = newState;
         currentState.Enter(this);
     }
@@ -76,18 +122,21 @@ public class PlayerController : MonoBehaviour
     public string GetCurrentStateName()
     {
         return currentState?.GetStateName() ?? "None";
-
     }
 
-    // Update is called once per frame
     void Update()
     {
         // State Pattern 업데이트
         currentState?.Update(this);
 
-        // 기존 Update 로직 유지
+        // 입력 처리
+        HandleRotationInput();
+    }
+    
+    void HandleRotationInput()
+    {
         float turn = Input.GetAxis("Horizontal");
-        if (turn != 0)
+        if (turn != 0 && rb != null)
         {
             Quaternion deltaRotation = Quaternion.Euler(Vector3.up * turn * rotationSpeed * Time.deltaTime);
             rb.MoveRotation(rb.rotation * deltaRotation);
@@ -96,8 +145,24 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (rb == null) return;
+        
+        UpdateGroundCheck();
+        HandleMovementInput();
+        
+        if (!isGrounded)
+        {
+            UprightCorrection();
+        }
+    }
+    
+    void UpdateGroundCheck()
+    {
         isGrounded = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance + 0.1f);
-
+    }
+    
+    void HandleMovementInput()
+    {
         float move = Input.GetAxis("Vertical");
 
         if (isGrounded && move != 0)
@@ -106,15 +171,12 @@ public class PlayerController : MonoBehaviour
             if (rb.velocity.magnitude < maxSpeed)
                 rb.AddForce(force);
         }
-
-        if (!isGrounded)
-		{
-			UprightCorrection();
-		}
     }
 
     void UprightCorrection()
     {
+        if (rb == null) return;
+        
         Quaternion targetRotation = Quaternion.FromToRotation(transform.up, Vector3.up) * rb.rotation;
         rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, uprightStability * Time.fixedDeltaTime));
     }
@@ -123,19 +185,28 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            bool immune = isImmune || dashForwardScript.isDashing || hyunmuModeScript.isInvincible;
-            if (!immune)
-            {
-				EffectManager.Instance.PlayMarcoHit(transform.position);
-                statusBarScript.TakeDamage(enemyDamage);
-                StartCoroutine(ImmuneCoroutine());
-            }
+            HandleEnemyCollision();
+        }
+    }
+    
+    void HandleEnemyCollision()
+    {
+        bool immune = isImmune || 
+                     (dashForwardScript != null && dashForwardScript.isDashing) || 
+                     (hyunmuModeScript != null && hyunmuModeScript.isInvincible);
+                     
+        if (!immune)
+        {
+            EffectManager.Instance?.PlayMarcoHit(transform.position);
+            statusBarScript?.TakeDamage(enemyDamage);
+            StartCoroutine(ImmuneCoroutine());
         }
     }
 
     private IEnumerator ImmuneCoroutine()
     {
         isImmune = true;
+        
         // State를 Immune으로 변경
         IPlayerState previousState = currentState;
         ChangeState(immuneState);
@@ -143,20 +214,33 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(immuneTime);
 
         isImmune = false;
-        // 이전 상태로 복귀 (일반적으로 Normal)
+        // Normal 상태로 복귀
         ChangeState(normalState);
     }
 
     void OnTriggerEnter(Collider other)
     {
-        // TODO : Item logic
         if (other.gameObject.CompareTag("Light") && lightTrigger)
         {
-			EffectManager.Instance.PlayBaseArrival(transform.position);
-            gameClear.SetActive(true);
-            StartCoroutine(LightTriggerCoroutine());
-            Time.timeScale = 0f;
+            HandleLightTrigger();
         }
+    }
+    
+    void HandleLightTrigger()
+    {
+        EffectManager.Instance?.PlayBaseArrival(transform.position);
+        
+        if (gameClear != null)
+        {
+            gameClear.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ GameClear object is not assigned!");
+        }
+        
+        StartCoroutine(LightTriggerCoroutine());
+        Time.timeScale = 0f;
     }
 
     private IEnumerator LightTriggerCoroutine()
@@ -181,4 +265,9 @@ public class PlayerController : MonoBehaviour
     {
         ChangeState(normalState);
     }
+    
+    // 디버그 정보 제공
+    public bool IsGrounded() => isGrounded;
+    public bool IsImmune() => isImmune;
+    public Vector3 GetVelocity() => rb != null ? rb.velocity : Vector3.zero;
 }
