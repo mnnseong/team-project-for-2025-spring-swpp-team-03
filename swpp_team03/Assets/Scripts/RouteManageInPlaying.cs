@@ -12,6 +12,7 @@ public class RouteManageInPlaying : MonoBehaviour
     public GameObject lightObject;
     public TextMeshProUGUI nextBaseText;
 	private bool isGameCleared = false;
+    public GameObject gameClear;
 
     void Start()
     {
@@ -30,7 +31,7 @@ public class RouteManageInPlaying : MonoBehaviour
 
 		MiniMapNext marker = FindObjectOfType<MiniMapNext>();
 		marker.target = lightObject.transform;
-		
+
         nextBaseText.text = $"Next Base : {routeInt%10}";
         routeInt = routeInt / 10;
     }
@@ -45,7 +46,9 @@ public class RouteManageInPlaying : MonoBehaviour
     {
         if (routeInt == 0)
         {
+
             Debug.Log("Game Clear!");
+            gameClear.SetActive(true);
 			isGameCleared = true;
             Time.timeScale = 0f;
         }
