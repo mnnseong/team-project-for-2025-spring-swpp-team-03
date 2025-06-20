@@ -11,6 +11,7 @@ public class TimeCountdown : MonoBehaviour
 
     private float _timeRemaining;
     private bool _isRunning = false;
+    private float timeSpent = 0f;
 
     private StatusBar statusBar;
 
@@ -53,15 +54,6 @@ public class TimeCountdown : MonoBehaviour
         // Format: "MM:SS.mmm" (e.g. "01:05.042")
         timeText.text = $"{minutes:00}:{seconds:00}.{msec:000}";
         float initialTime = startMinutes * 60f + startSeconds;
-        // how much time has actually elapsed
-        float elapsed = initialTime - _timeRemaining;
-        elapsed = Mathf.Max(elapsed, 0f);
-
-        int mUsed = Mathf.FloorToInt(elapsed / 60f);
-        int sUsed = Mathf.FloorToInt(elapsed % 60f);
-        int msUsed = Mathf.FloorToInt((elapsed * 1000f) % 1000f);
-
-        timeUsedText.text = $"{mUsed:00}:{sUsed:00}.{msUsed:000}";
     }
 
     public void PauseTimer()
@@ -100,5 +92,21 @@ public class TimeCountdown : MonoBehaviour
         startSeconds = seconds % 60;
 
         UpdateUI();
+    }
+
+    public void AddTimeUsed()
+    {
+        timeSpent = timeSpent + 60f - _timeRemaining;
+        _timeRemaining = 60f;
+        UpdateUI();
+    }
+
+    public void SetTimeUsed()
+    {
+        int mUsed = Mathf.FloorToInt(timeSpent / 60f);
+        int sUsed = Mathf.FloorToInt(timeSpent % 60f);
+        int msUsed = Mathf.FloorToInt((timeSpent * 1000f) % 1000f);
+
+        timeUsedText.text = $"{mUsed:00}:{sUsed:00}.{msUsed:000}";
     }
 }

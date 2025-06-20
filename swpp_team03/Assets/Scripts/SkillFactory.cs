@@ -29,14 +29,19 @@ public class SkillInfo
 // Factory Pattern - 스킬 생성 팩토리
 public static class SkillFactory
 {
+    private const float dragonCoolTime = 4f;
+    private const float tigerCoolTime = 4f;
+    private const float birdCoolTime = 10f;
+    private const float turtleCoolTime = 8f;
+
     private static readonly Dictionary<SkillType, SkillInfo> skillInfos = new Dictionary<SkillType, SkillInfo>
     {
-        { SkillType.Dragon, new SkillInfo("청룡 스킬", 10f, "근처 장애물 파괴") },
-        { SkillType.Tiger, new SkillInfo("백호 스킬", 12f, "돌진 공격") },
-        { SkillType.Phoenix, new SkillInfo("주작 스킬", 8f, "높이 점프") },
-        { SkillType.Turtle, new SkillInfo("현무 스킬", 15f, "무적 모드") }
+        { SkillType.Dragon, new SkillInfo("청룡 스킬", dragonCoolTime , "근처 장애물 파괴") },
+        { SkillType.Tiger, new SkillInfo("백호 스킬", tigerCoolTime, "돌진 공격") },
+        { SkillType.Phoenix, new SkillInfo("주작 스킬", birdCoolTime, "높이 점프") },
+        { SkillType.Turtle, new SkillInfo("현무 스킬", turtleCoolTime, "무적 모드") }
     };
-    
+
     public static ISkillCommand CreateSkillCommand(SkillType skillType)
     {
         switch (skillType)
@@ -54,12 +59,12 @@ public static class SkillFactory
                 return null;
         }
     }
-    
+
     public static SkillInfo GetSkillInfo(SkillType skillType)
     {
         return skillInfos.ContainsKey(skillType) ? skillInfos[skillType] : null;
     }
-    
+
     public static SkillType GetSkillTypeFromKey(string key)
     {
         switch (key.ToLower())

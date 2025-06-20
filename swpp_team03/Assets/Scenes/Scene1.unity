@@ -198,8 +198,9 @@ MonoBehaviour:
   - {fileID: 723299058}
   - {fileID: 695226932}
   lightObject: {fileID: 1227067641}
-  nextBaseText: {fileID: 842716139}
+  leftBaseText: {fileID: 842716139}
   gameClear: {fileID: 1582599202}
+  timeCountDown: {fileID: 1996721289}
 --- !u!1 &37540632
 GameObject:
   m_ObjectHideFlags: 0
@@ -2055,9 +2056,9 @@ MonoBehaviour:
   energyRecoverSFX: {fileID: 8300000, guid: 4dcc2b45e22bb44dba941b747d1b1e9d, type: 3}
   gameOverSFX: {fileID: 8300000, guid: fb080a287888644a8ac9fdaa96a5dc1f, type: 3}
   buttonClickSFX: {fileID: 8300000, guid: 2833300871e7b4c8f8ab0ce68f25c3b8, type: 3}
-  cheongryongSkillEffect: {fileID: 1171201465392465800, guid: 4aa9f30a28a77224ba84b2a2c334c71b, type: 3}
+  cheongryongSkillEffect: {fileID: 1171201465392465800, guid: c5a7c13a317290441a86cdb64571e5b6, type: 3}
   jujakSkillEffect: {fileID: 1758473627833946668, guid: dab528bccfb322442af70626fd148cc5, type: 3}
-  baekhoSkillEffect: {fileID: 6063518424537689786, guid: bad5794a53f5c3645bb444b3a040ba01, type: 3}
+  baekhoSkillEffect: {fileID: 6063518424537689786, guid: 6ba409b1231e51a46bc42d9f15a4f8b1, type: 3}
   hyunmuSkillEffect: {fileID: 6424583148328831481, guid: b17cc485d4ee1774d994912a55cf1dd7, type: 3}
   marcoHitEffect: {fileID: 8078720523478869859, guid: 6f83d2e4f70edc043b22e3a0fe30e754, type: 3}
   obstacleBreakEffect: {fileID: 358637981425055526, guid: b45272107c625ac4caa6f8483171989b, type: 3}
@@ -5185,7 +5186,7 @@ GameObject:
   - component: {fileID: 842716138}
   - component: {fileID: 842716139}
   m_Layer: 5
-  m_Name: NextBase
+  m_Name: leftBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5219,7 +5220,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Next base : '
+  m_text: 'Left Base : '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a640a88eac4274c57b666e00f4e45914, type: 2}
   m_sharedMaterial: {fileID: 6375910931738209141, guid: a640a88eac4274c57b666e00f4e45914, type: 2}
@@ -13315,7 +13316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startMinutes: 0
-  startSeconds: 100
+  startSeconds: 60
   timeText: {fileID: 247451457}
   timeUsedText: {fileID: 336858140}
 --- !u!4 &1996721291
@@ -23054,10 +23055,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 835353135}
     m_Modifications:
-    - target: {fileID: 543450653145746950, guid: 5d980a636cb27c745ba5eb7541152e0d, type: 3}
-      propertyPath: duration
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 7165709235137492542, guid: 5d980a636cb27c745ba5eb7541152e0d, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -23102,10 +23099,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7276427113200579811, guid: 5d980a636cb27c745ba5eb7541152e0d, type: 3}
-      propertyPath: gameClear
-      value: 
-      objectReference: {fileID: 1582599202}
     - target: {fileID: 7510427727597104260, guid: 5d980a636cb27c745ba5eb7541152e0d, type: 3}
       propertyPath: m_Name
       value: marco

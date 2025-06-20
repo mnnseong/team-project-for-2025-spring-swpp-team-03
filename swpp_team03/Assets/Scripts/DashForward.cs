@@ -9,10 +9,14 @@ public class DashForward : MonoBehaviour
     private float dashTimer;
     public bool isDashing = false;
     private Rigidbody rb;
+    public float effectposition = 35f;
+    public float skillCost = 5f;
+    private AreaDestroy areaDestroyScript;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        areaDestroyScript = GetComponent<AreaDestroy>();
         if (rb == null)
         {
             Debug.LogError("❌ Rigidbody가 필요합니다!");
@@ -34,13 +38,15 @@ public class DashForward : MonoBehaviour
 
     public void StartDash()
     {
+        if (areaDestroyScript.GetEnergy() < skillCost) return;
         if (rb == null) return;
 
         isDashing = true;
         dashTimer = dashDuration;
-		
+
+        areaDestroyScript.ConsumeEnergy(skillCost);
         Vector3 dashVelocity = transform.forward * dashSpeed;
-		EffectManager.Instance.PlayBaekhoSkill(transform.position + transform.forward * 35f, dashVelocity);
+		EffectManager.Instance.PlayBaekhoSkill(transform.position + transform.forward * effectposition, dashVelocity);
 
         // 👉 순간적으로 힘을 줘서 밀어버리기
         rb.velocity = dashVelocity;
