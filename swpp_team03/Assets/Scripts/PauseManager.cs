@@ -58,5 +58,10 @@ public class PauseManager : MonoBehaviour
         pauseMenuPanel.SetActive(false);
         pauseButton.gameObject.SetActive(true);
     }
+
+	public bool IsGamePaused()
+	{
+		return isPaused;
+	}
 }
 

@@ -20,6 +20,10 @@ public class SkillUIController : MonoBehaviour
     private Dictionary<SkillType, ISkillCommand> skillCommands;
     private Dictionary<SkillType, SkillCooldown> skillCooldowns;
 
+	public StatusBar statusBar;
+	public PauseManager pauseManager;
+	public RouteManageInPlaying routeManager;
+
     void Start()
     {
         InitializeSkillSystem();
@@ -72,6 +76,14 @@ public class SkillUIController : MonoBehaviour
 
     void UseSkill(string key)
     {
+		if ((statusBar != null && statusBar.IsGameOver()) ||
+			(pauseManager != null && pauseManager.IsGamePaused()) ||
+			(routeManager != null && routeManager.IsGameCleared()))
+		{
+			Debug.Log("Game Overed/Paused/Cleared");
+			return;
+		}		
+
         Debug.Log($"💥 Skill {key} activated!");
 
         SkillType skillType = SkillFactory.GetSkillTypeFromKey(key);
