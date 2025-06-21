@@ -8,14 +8,18 @@ public class RouteManageInPlaying : MonoBehaviour
     // Start is called before the first frame update
     private GameObject routeManager;
     private int routeInt;
+    private int leftCount;
     public Transform[] lightTransforms;
     public GameObject lightObject;
-    public TextMeshProUGUI nextBaseText;
+    public TextMeshProUGUI leftBaseText;
 	private bool isGameCleared = false;
     public GameObject gameClear;
+    public GameObject timeCountDown;
+    private TimeCountdown timeCountdownScript;
 
     void Start()
     {
+        timeCountdownScript = timeCountDown.GetComponent<TimeCountdown>();
         if (GameObject.Find("RouteManager_1"))
         {
             routeManager = GameObject.Find("RouteManager_1");
@@ -32,7 +36,8 @@ public class RouteManageInPlaying : MonoBehaviour
 		MiniMapNext marker = FindObjectOfType<MiniMapNext>();
 		marker.target = lightObject.transform;
 
-        nextBaseText.text = $"Next Base : {routeInt%10}";
+        leftCount = routeInt.ToString().Length;
+        leftBaseText.text = $"Left Base : {leftCount}";
         routeInt = routeInt / 10;
     }
 
@@ -44,25 +49,27 @@ public class RouteManageInPlaying : MonoBehaviour
 
     public void Next()
     {
-        if (routeInt == 0)
+        timeCountdownScript.AddTimeUsed();
+        if (leftCount == 1)
         {
-
+            timeCountdownScript.SetTimeUsed();
             Debug.Log("Game Clear!");
             gameClear.SetActive(true);
-			isGameCleared = true;
+            isGameCleared = true;
             Time.timeScale = 0f;
         }
         else
         {
             int nextindex = routeInt % 10;
             routeInt = routeInt / 10;
-            nextBaseText.text = $"Next Base : {nextindex}";
+            leftCount--;
+            leftBaseText.text = $"Left Base : {leftCount}";
             lightObject.transform.position = lightTransforms[nextindex].position;
-			MiniMapNext marker = FindObjectOfType<MiniMapNext>();
-			if (marker != null)
-			{
-				marker.target = lightObject.transform;
-			}
+            MiniMapNext marker = FindObjectOfType<MiniMapNext>();
+            if (marker != null)
+            {
+                marker.target = lightObject.transform;
+            }
         }
     }
 

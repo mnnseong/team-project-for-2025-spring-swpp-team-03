@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class EnergyItem : MonoBehaviour
 {
+    public float energyRecover = 50f;
     void OnTriggerEnter(Collider other)
     {
         Debug.Log($"[충돌 감지] {other.name}"); // 로그 찍기
@@ -15,7 +16,7 @@ public class EnergyItem : MonoBehaviour
             StatusBar status = FindObjectOfType<StatusBar>();
             if (status != null)
             {
-                status.AddEnergy(10f);
+                status.AddEnergy(energyRecover);
             }
 
             Destroy(gameObject); // 아이템 제거

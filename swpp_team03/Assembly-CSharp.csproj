@@ -66,6 +66,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
     <Compile Include="Assets\Scripts\MiniMapFollow.cs" />
     <Compile Include="Assets\Scripts\FadeInTitle.cs" />
+    <Compile Include="Assets\Scripts\SkillFactory.cs" />
     <Compile Include="Assets\Scripts\SkillUIController.cs" />
     <Compile Include="Assets\Scripts\RouteManageInPlaying.cs" />
     <Compile Include="Assets\UnityTechnologies\ParticlePack\Shared\Scripts\ProximityActivate.cs" />

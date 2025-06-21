@@ -2250,10 +2250,9 @@ MonoBehaviour:
   groundCheckDistance: 2
   centerOfGravityY: -1
   gravityStrength: 10
-  gameClear: {fileID: 0}
-  isImmune: 0
-  enemyDamage: 10
+  enemyDamage: 20
   immuneTime: 3
+  isImmune: 0
 --- !u!114 &543450653145746947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2266,10 +2265,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b3c689e16cae4d2797ed628d8a8703a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashSpeed: 100
-  dashDuration: 50
+  dashSpeed: 200
+  dashDuration: 100
   hitEffect: {fileID: 0}
   isDashing: 0
+  effectposition: 0
+  skillCost: 10
 --- !u!114 &543450653145746951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2282,9 +2283,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de1d67dda85a49cb8347ccbc207b16a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 50
+  radius: 12
   energyCost: 5
   cooldown: 1
+  effectposition: 0
 --- !u!114 &543450653145746952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2313,9 +2315,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f7ea5bea644748bb90e1e6de91dde7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  energyCost: 30
+  energyCost: 10
   cooldown: 1
-  duration: 5
+  duration: 4
   isInvincible: 0
 --- !u!1 &7586485195902019700
 GameObject:
