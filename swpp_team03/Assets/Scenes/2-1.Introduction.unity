@@ -362,8 +362,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Line 1\nLine 2\nLine 3 \nLine 4 \nLine 5"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a640a88eac4274c57b666e00f4e45914, type: 2}
-  m_sharedMaterial: {fileID: 6375910931738209141, guid: a640a88eac4274c57b666e00f4e45914, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2bd08d60170c44b84bc956766a3ee620, type: 2}
+  m_sharedMaterial: {fileID: 8363397294407588105, guid: 2bd08d60170c44b84bc956766a3ee620, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -423,7 +423,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -488.95618, w: -186.06296}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -754,11 +754,32 @@ MonoBehaviour:
   storyText: {fileID: 146268102}
   nextButton: {fileID: 914730989}
   lines:
-  - Line 1
-  - Line 2
-  - Line 3
-  - 'Line 4 '
-  - Line 5
+  - "21\uC138\uAE30 \uD6C4\uBC18.  \uC9C0\uAD6C\uB294 \uB354 \uC774\uC0C1 \uBC84\uD2F8
+    \uC218 \uC5C6\uC5C8\uB2E4.  \uC790\uC6D0\uC740 \uBC14\uB2E5\uB0AC\uACE0, \uC778\uAD6C\uB294
+    \uD55C\uACC4\uC5D0 \uB2E4\uB2E4\uB790\uB2E4.  \uC778\uB958\uB294 \uACB0\uAD6D,
+    \uB208\uC744 \uD558\uB298\uB85C \uB3CC\uB838\uB2E4. \uD654\uC131."
+  - "\uBA87 \uB144\uAC04\uC758 \uB17C\uC758 \uB05D\uC5D0, \uCD5C\uC885 \uBAA9\uC801\uC9C0\uAC00
+    \uACB0\uC815\uB418\uC5C8\uB2E4.  **\uBC1C\uB808\uC2A4 \uB9C8\uB9AC\uB124\uB9AC\uC2A4
+    \uD611\uACE1.**  \uD0DC\uC591\uACC4\uC5D0\uC11C \uAC00\uC7A5 \uAC70\uB300\uD55C
+    \uD611\uACE1.  \uADF8 \uAE4A\uC740 \uADF8\uB298 \uC544\uB798, \uC778\uB958\uB294
+    \uC0C8\uB85C\uC6B4 \uD130\uC804\uC744 \uC138\uC6B0\uB824 \uD55C\uB2E4."
+  - "\uD558\uC9C0\uB9CC \uD654\uC131\uC740 \uB9CC\uB9CC\uD55C \uD589\uC131\uC774
+    \uC544\uB2C8\uB2E4.  \uD5D8\uD55C \uC9C0\uD615, \uAC70\uC13C \uBAA8\uB798\uD3ED\uD48D,
+    \uADF8\uB9AC\uACE0...  \uC544\uC9C1 \uBC1D\uD600\uC9C0\uC9C0 \uC54A\uC740 \uC0DD\uBA85\uCCB4\uC758
+    \uD754\uC801\uB4E4.  \uC9C1\uC811 \uB4E4\uC5B4\uAC00\uAE30\uC5D4, \uC778\uAC04\uC740
+    \uB108\uBB34 \uC5F0\uC57D\uD558\uB2E4."
+  - "\uADF8\uB798\uC11C \uB9CC\uB4E4\uC5B4\uC84C\uB2E4.  **\uB9C8\uB974\uCF54.** 
+    *Martian Advanced Rover for Cargo transport and Observation.*  \uD0D0\uC0AC,
+    \uC218\uC1A1, \uC790\uAC00 \uC218\uB9AC, \uC790\uAE30 \uBC29\uC5B4\uAE4C\uC9C0
+    \uAC00\uB2A5\uD55C,  \uC778\uB958 \uAE30\uC220\uC758 \uCD1D\uC9D1\uD569."
+  - "\uADF8\uB9AC\uACE0 \uC9C0\uAE08, \uADF8 \uB9C8\uB974\uCF54\uB97C \uC6C0\uC9C1\uC77C
+    \uC870\uC885\uC790\uB294 \uBC14\uB85C \uB2F9\uC2E0\uC774\uB2E4.  \uBC18\uC751
+    \uC18D\uB3C4, \uD310\uB2E8\uB825, \uC870\uC791 \uC2E4\uB825.  \uB2F9\uC2E0\uC740
+    \uC9C0\uAD6C\uC5D0\uC11C \uAC00\uC7A5 \uB6F0\uC5B4\uB09C \uD30C\uC77C\uB7FF\uC73C\uB85C
+    \uC120\uBC1C\uB418\uC5C8\uB2E4.  **\uB808\uB4DC \uB8E8\uD2B8 \uC774\uB2C8\uC154\uD2F0\uBE0C.** 
+    \uC778\uB958\uC758 \uB9C8\uC9C0\uB9C9 \uC774\uC8FC \uD504\uB85C\uC81D\uD2B8. 
+    **80\uC5B5\uC758 \uBBF8\uB798\uAC00, \uB2F9\uC2E0\uC758 \uC190\uC5D0 \uB2EC\uB824
+    \uC788\uB2E4.**"
   delay: 2
 --- !u!1 &722440707
 GameObject:

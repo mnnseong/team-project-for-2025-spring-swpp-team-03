@@ -6,15 +6,15 @@ using TMPro;
 
 public class StoryDisplay : MonoBehaviour
 {
-    public TextMeshProUGUI storyText;   
-    public Button nextButton;           
+    public TextMeshProUGUI storyText;
+    public Button nextButton;
     public string[] lines;
     public float delay = 2f;
 
     private void Start()
     {
         storyText.text = "";
-        nextButton.gameObject.SetActive(false);  
+        nextButton.gameObject.SetActive(false);
         StartCoroutine(ShowStory());
     }
 
@@ -22,10 +22,13 @@ public class StoryDisplay : MonoBehaviour
     {
         foreach (string line in lines)
         {
-            storyText.text += line + "\n";
+            storyText.text = line;  // ← replace previous line
             yield return new WaitForSeconds(delay);
         }
-        nextButton.gameObject.SetActive(true);  
+
+        // After all lines are shown, show the Next button
+        storyText.text = ""; // Optional: clear last line before showing button
+        nextButton.gameObject.SetActive(true);
     }
 
     public void GoToInstructions()
